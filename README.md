@@ -8,7 +8,6 @@ __First way:__
 ```js
 import { Language } from 'eventfuck';
 let myLanguage = new Language({
-  // Object where the 
   '+': increment,
   '-': decrement,
   '<': leftShift,
