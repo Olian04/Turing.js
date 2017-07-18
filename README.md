@@ -30,7 +30,7 @@ let myLanguage = new Language({
   .token('*', (state, token) => {
     return new Error({
       code: 1337,
-      message: 'If you return an error, it will be handled over to the errorHandler method provided in the constructor'
+      message: 'If you return an error, it will be handled over to the errorHandler provided in the constructor'
       level: 'MINOR'
     });
   });
