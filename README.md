@@ -28,6 +28,7 @@ let myLanguage = new Language({
     }
   })
   .token('*', (state, token) => {
+    // * is NOT a wildcard
     return new Error({
       code: 1337,
       message: 'If you return an error, it will be handled over to the errorHandler provided in the constructor'
