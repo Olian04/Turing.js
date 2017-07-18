@@ -5,7 +5,7 @@ EventFuck is a Brain-Fuck-Styled-Event-Driven-Language-Design-API
 ## Goal API
 
 ```js
-import { Language } from 'eventfuck';
+import { Language, Error } from 'eventfuck';
 let myLanguage = new Language({
   '+': increment,
   '-': decrement,
@@ -20,13 +20,20 @@ let myLanguage = new Language({
   .token('[', (state, token) => {
     state.allowEOF = false; 
     state.data.loops.push(token.position);
-   })
+  })
   .token(']', (state, token) => {
     token.position = state.data.loops.pop();
     if (state.data.loops.length === 0) {
       state.allowEOF = true;
     }
-   });
+  })
+  .token('*', (state, token) => {
+    return new Error({
+      code: 1337,
+      message: 'If you return an error, it will be handled over to the errorHandler method provided in the constructor'
+      level: 'MINOR'
+    });
+  });
 
 let finalState = myLanguage.run('+++[->,.+++.<]', {
   // The data object is used to store data that eventfuck won't touch
@@ -53,8 +60,8 @@ tokenPrototype: {
   value: ''
 }
 errorPrototype = {
-  code: 0, // Status code, definitions will be on the wiki
+  code: 0, // Status codes
   message: 'OK',
-  level: '', // MINOR: missing token, MAJOR: , FATAL
+  level: '', // MINOR (ex: missing token definition), MAJOR (ex: unexpected EOF) , FATAL (ex: state.index < 0)
 }
 ```
