@@ -50,12 +50,12 @@ function endLoop(state, token) {
   state.index = state.data.loops.pop();
 }
 
-let finalState = myLanguage.run({
+let finalState = myLanguage.run('+++[->,.+++.<]', {
   // The data object is used to store data that eventfuck won't touch
   in: 'ABC'.split(''),
   out: [],
   loops: [],
-}, '+++[->,.+++.<]');
+});
 
 console.log(finalState.data.out.join('')); // ADBECF
 ```
@@ -78,12 +78,12 @@ let myLanguage = new Language({}, (error, state, token) => {
   .token('[', (state, token) => state.data.loops.push(state.index))
   .token(']', (state, token) => state.index = state.data.loops.pop());
 
-let finalState = myLanguage.run({
+let finalState = myLanguage.run('+++[->,.+++.<]', {
   // The data object is used to store data that eventfuck won't touch
   in: 'ABC'.split(''),
   out: [],
   loops: [],
-}, '+++[->,.+++.<]');
+});
 
 console.log(finalState.data.out.join('')); // ADBECF
 
