@@ -14,7 +14,7 @@ new Language<{ sum: number }>()
   .token('+', state => state.data.sum++)
   .token('-', state => state.data.sum--)
   .data({ sum: 0 })
-  .run('+++-++-') // Returns a promis 
+  .run('+++-++-') // Returns a promise 
   .then(finalState => console.log(finalState))
   .catch(error => console.log(error));
 ```
