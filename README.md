@@ -61,7 +61,7 @@ programPromise
 
 ```ts
 /* Types */
-type TokenHandler<IData> = (state: IState<IData>, token: IToken) => IError;
+type TokenHandler<IData> = (state: IState<IData>, token: IToken) => (IError | void);
 interface ILanguage<IData> {
   token: (token: string, TokenHandler<IData> ) => ILanguage,
   tokens: ({ [token: string]: TokenHandler<IData> }) => ILanguage,
