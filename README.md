@@ -25,9 +25,9 @@ type TokenHandler<IData> = (state: IState<IData>, token: IToken) => (IError | vo
 interface ILanguage<IData> {
   token: (token: string, TokenHandler<IData> ) => ILanguage,
   tokens: ({ [token: string]: TokenHandler<IData> }) => ILanguage,
-  data: ( IData ) => ILanguage,
-  run: ( code: string ) => Promise<IState>,
-  eof: ( (state: IState<IData>) => (boolean | IError) /* false => throws UnexpectedEOFError */)
+  data: IData => ILanguage,
+  run: code: string => Promise<IState>,
+  eof: state: IState<IData> => (boolean | IError) /* false => throws UnexpectedEOFError */,
 }
 interface IState<IData> {
   stack: number[], // The stack will automaticaly grow into the possitive indecies
