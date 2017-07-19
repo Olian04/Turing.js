@@ -25,11 +25,11 @@ interface ILanguage<IData> {
   tokens: ({ [token: string]: TokenHandler<IData> }) => ILanguage,
   data: ( IData ) => ILanguage,
   run: ( code: string ) => Promise<IState>,
+  eof: ( (state: IState<IData>) => (boolean | IError) /* false => throws UnexpectedEOFError */)
 }
 interface IState<IData> {
   stack: number[], // The stack will automaticaly grow into the possitive indecies
   index: number,
-  allowEOF: boolean, // Will throw an error in this is false and EOF is reached
   data: IData, // Reserved for user defined data
 }
 interface IToken {
@@ -67,17 +67,9 @@ let myLanguage = new Language<MyData>()
     '<': (state, token) => state.index--,
     ',': (state, token) => state.stack[state.index] = state.data.in.shift().charCodeAt(0),
     '.': (state, token) => state.data.out.push(String.fromCharCode(state.stack[state.index])),
-  })
-  .token('[', (state, token) => {
-    state.allowEOF = false; 
-    state.data.loops.push(token.position);
-  })
-  .token(']', (state, token) => {
-    token.position = state.data.loops.pop();
-    if (state.data.loops.length === 0) {
-      state.allowEOF = true;
-    }
-  });
+    '[': (state, token) => state.data.loops.push(token.position),
+    ']': (state, token) => state.position = state.data.loops.pop(),
+  }).eof(state => state.data.loops.length === 0 /* Fails if we have opned more loops than we close */);
 
 let code = '+++[->,.+++.<]';
 let programPromise = myLanguage.data({
