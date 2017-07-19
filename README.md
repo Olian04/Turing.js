@@ -23,11 +23,15 @@ new Language<{ sum: number }>()
 /* Types */
 type TokenHandler<IData> = (state: IState<IData>, token: IToken) => (IError | void);
 interface ILanguage<IData> {
+  /* constructor takes an optional options object of type IOptions */
   token: (token: string, TokenHandler<IData> ) => ILanguage,
   tokens: ({ [token: string]: TokenHandler<IData> }) => ILanguage,
   data: IData => ILanguage,
   run: code: string => Promise<IState>,
   eof: state: IState<IData> => (boolean | IError) /* false => throws UnexpectedEOFError */,
+}
+interface IOptions {
+  matcherRegex?: '()', // Every empty capture group will be replaced with the token to match
 }
 interface IState<IData> {
   stack: number[], // The stack will automaticaly grow into the possitive indecies
