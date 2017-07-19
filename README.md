@@ -1,6 +1,5 @@
-# EventFuck
-EventFuck is a Brain-Fuck-Styled-Event-Driven-Language-Design-API
-
+# Turing.js
+Turing.js is an Event-Driven-Language-Design-API based on the definition of a turing machine.
 
 ## Goal API
 
