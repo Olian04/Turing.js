@@ -4,19 +4,54 @@ EventFuck is a Brain-Fuck-Styled-Event-Driven-Language-Design-API
 
 ## Goal API
 
-```js
-import { Language, Error } from 'eventfuck';
-let myLanguage = new Language({
-  '+': increment,
-  '-': decrement,
-  '<': leftShift,
-  '>': rightShift
- }, (error, state, token) => {
-  console.log(error); 
-  return true; /* true to end execution */
-})
-  .token(',', (state, token) => state.stack[state.index] = state.data.in.shift())
-  .token('.', (state, token) => state.data.out.push(state.stack[state.index]))
+```ts
+/* Types */
+type TokenHandler<IData> = (state: IState<IData>, token: IToken) => IError;
+interface ILanguage<IData> {
+  token: (token: string, TokenHandler<IData> ) => ILanguage,
+  tokens: ({ [token: string]: TokenHandler<IData> }) => ILanguage,
+  data: ( IData ) => ILanguage,
+  start: ( code: string ) => Promise<IState>,
+}
+interface IState<IData> {
+  stack: number[], // The stack will automaticaly grow into the possitive indecies
+  index: number,
+  allowEOF: boolean, // Will throw an error in this is false and EOF is reached
+  data: IData, // Reserved for user defined data
+}
+interface IToken {
+  position: number,
+  value: string,
+}
+enum ErrorLevel {
+  MINOR = 0, // Ex: Missing token definition
+  MAJOR = 1, // Ex: Unexpected EOF
+  FATAL = 2, // Ex: state.index < 0
+}
+interface IError {
+  code: number, // Status codes
+  message: string,
+  level: ErrorLevel,
+}
+```
+
+```ts
+/* Demo */
+import { Language } from 'eventfuck';
+interface MyData {
+  in: string[],
+  out: string[],
+  loops: number[],
+}
+let myLanguage = new Language<MyData>()
+  .tokens({
+    '+': (state, token) => state.stack[state.index]++,
+    '-': (state, token) => state.stack[state.index]--,
+    '>': (state, token) => state.index++,
+    '<': (state, token) => state.index--,
+    ',': (state, token) => state.stack[state.index] = state.data.in.shift().charCodeAt(0),
+    '.': (state, token) => state.data.out.push(String.fromCharCode(state.stack[state.index])),
+  })
   .token('[', (state, token) => {
     state.allowEOF = false; 
     state.data.loops.push(token.position);
@@ -29,9 +64,9 @@ let myLanguage = new Language({
   })
   .token('*', (state, token) => {
     // * is NOT a wildcard
-    return new Error({
+    return {
       code: 1337,
-      message: 'If you return an error, it will be handled over to the errorHandler provided in the constructor'
+      message: 'If you return an error it will be thrown'
       level: 'MINOR'
     });
   });
@@ -43,26 +78,14 @@ let finalState = myLanguage.run('+++[->,.+++.<]', {
   loops: [],
 });
 
-console.log(finalState.data.out.join('')); // ADBECF
+let code = '+++[->,.+++.<]';
+let programPromise = myLanguage.data({
+  in: 'ABC'.split(''),
+  out: [],
+  loops: [],
+}).start(code);
 
-```
-
-
-__Prototypes used in the Language constructor:__
-```js
-statePrototype = {
-  stack: [0], // The stack will automaticaly grow into the possitive indecies
-  index: 0,
-  allowEOF: true, // Will throw an error in this is false and EOF is reached
-  data: {}, // Reserved for user defined data
-}
-tokenPrototype: {
-  position: 0,
-  value: ''
-}
-errorPrototype = {
-  code: 0, // Status codes
-  message: 'OK',
-  level: '', // MINOR (ex: missing token definition), MAJOR (ex: unexpected EOF) , FATAL (ex: state.index < 0)
-}
+programPromise
+  .then(finalState => console.log(finalState.data.out.join('')) /* ADBECF */)
+  .catch(error => console.log(error));
 ```
