@@ -52,7 +52,7 @@ let programPromise = myLanguage.data({
   in: 'ABC'.split(''),
   out: [],
   loops: [],
-}).start(code);
+}).run(code);
 
 programPromise
   .then(finalState => console.log(finalState.data.out.join('')) /* ADBECF */)
@@ -66,7 +66,7 @@ interface ILanguage<IData> {
   token: (token: string, TokenHandler<IData> ) => ILanguage,
   tokens: ({ [token: string]: TokenHandler<IData> }) => ILanguage,
   data: ( IData ) => ILanguage,
-  start: ( code: string ) => Promise<IState>,
+  run: ( code: string ) => Promise<IState>,
 }
 interface IState<IData> {
   stack: number[], // The stack will automaticaly grow into the possitive indecies
