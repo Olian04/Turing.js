@@ -8,7 +8,7 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 
 ```ts
 /* Super small counter demo */
-import { Language } from 'eventfuck';
+import { Language } from 'turingjs';
 
 new Language<{ sum: number }>()
   .token('+', state => state.data.sum++)
@@ -62,7 +62,8 @@ interface IError {
 
 ```ts
 /* Demo */
-import { Language } from 'eventfuck';
+import { Language } from 'turingjs';
+
 interface MyData {
   in: string[],
   out: string[],
