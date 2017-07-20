@@ -24,7 +24,7 @@ new Language<{ sum: number }>()
 type TokenHandler<IData> = 
 (state: IState<IData>, token: IToken) => (void 
   | IError 
-  | (state: IState<IData>, token: IToken) => boolean);
+  | (state: IState<IData>, token: IToken) => (boolean | IError));
 interface ILanguage<IData> {
   /* constructor takes an optional options object of type IOptions */
   token: (token: string, TokenHandler<IData> ) => ILanguage,
@@ -34,7 +34,7 @@ interface ILanguage<IData> {
   eof: state: IState<IData> => (boolean | IError) /* false => throws UnexpectedEOFError */,
 }
 interface IOptions {
-  matcherRegex?: '()', // Every empty capture group will be replaced with the token to match
+  tokenDeliminator?: string, // Default is an empty string, aka no deliminator, ex: +-++ 
 }
 interface IState<IData> {
   stack: number[], // The stack will automaticaly grow into the possitive indecies
