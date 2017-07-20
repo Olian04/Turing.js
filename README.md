@@ -29,12 +29,16 @@ interface ILanguage<IData> {
   /* constructor takes an optional options object of type IOptions */
   token: (token: string, TokenHandler<IData> ) => ILanguage,
   tokens: ({ [token: string]: TokenHandler<IData> }) => ILanguage,
-  data: IData => ILanguage,
-  run: code: string => Promise<IState>,
+  data: (data: IData) => ILanguage,
+  run: (code: string) => Promise<IState>,
+  runSynchronous: (code: string, 
+    onSuccess: (finalState: Istate<IData>) => void, 
+    onError: (error: Error) => void
+    ) => void; 
   eof: state: IState<IData> => (boolean | IError) /* false => throws UnexpectedEOFError */,
 }
 interface IOptions {
-  tokenDeliminator?: string, // Default is an empty string, aka no deliminator, ex: +-++ 
+  tokenDeliminators?: {name: string, deliminator: string}[], // Default is [{name: 'empty', deliminator: ''}]
 }
 interface IState<IData> {
   stack: number[], // The stack will automaticaly grow into the possitive indecies
@@ -44,6 +48,8 @@ interface IState<IData> {
 interface IToken {
   position: number,
   value: string,
+  previousDeliminator: string, // The name of the deliminator that separated this token from the previous one
+  nextDeliminator: string, // The name of the deliminator that separates this token from the next one
 }
 enum ErrorLevel {
   MINOR = 0, // Ex: Missing token definition
