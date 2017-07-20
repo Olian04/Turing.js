@@ -21,7 +21,10 @@ new Language<{ sum: number }>()
 
 ```ts
 /* Types */
-type TokenHandler<IData> = (state: IState<IData>, token: IToken) => (IError | void);
+type TokenHandler<IData> = 
+(state: IState<IData>, token: IToken) => (void 
+  | IError 
+  | (state: IState<IData>, token: IToken) => boolean);
 interface ILanguage<IData> {
   /* constructor takes an optional options object of type IOptions */
   token: (token: string, TokenHandler<IData> ) => ILanguage,
@@ -73,8 +76,28 @@ let myLanguage = new Language<MyData>()
     '<': (state, token) => state.index--,
     ',': (state, token) => state.stack[state.index] = state.data.in.shift().charCodeAt(0),
     '.': (state, token) => state.data.out.push(String.fromCharCode(state.stack[state.index])),
-    '[': (state, token) => state.data.loops.push(token.position),
+    '[': (state, token) => {
+      if (state.stack[state.index] === 0) {
+        let i = 1;
+        return (state, token) => {
+          // If you return a function, it will be called instead of any token function for every token untill you return true.
+          if (token.value === '[') { i++; }
+          if (token.value === ']') { i--; }
+          return i === 0;
+        };
+      } else {
+        state.data.loops.push(token.position)
+      }
+    },
     ']': (state, token) => state.position = state.data.loops.pop(),
+    '*': (state, token) => {
+      // * is not a wildcard
+      return {
+        code: 1337,
+        message: 'If you return an error, it will be thrown',
+        level: ErrorLevel.MINOR,
+      };
+    },
   }).eof(state => state.data.loops.length === 0 /* Fails if we have opned more loops than we close */);
 
 let code = '+++[->,.+++.<]';
