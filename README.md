@@ -27,7 +27,7 @@ type Partial<T> = {
 type TokenHandler<IData> = 
 (state: IState<IData>, token: IToken) => (void 
   | IError 
-  | (state: IState<IData>, token: IToken) => (boolean | IError));
+  | ((state: IState<IData>, token: IToken) => (boolean | IError)));
 interface ILanguage<IData> {
   /* constructor takes an optional options object of type IOptions */
   token: (token: string, TokenHandler<IData> ) => ILanguage,
