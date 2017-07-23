@@ -24,22 +24,22 @@ new Language<{ sum: number }>()
 type Partial<T> = {
     [P in keyof T]?: T[P];
 };
+interface ILanguage<IData> {
+  /* constructor takes an optional options object of type IOptions */
+  token: (pattern: string, handler: TokenHandler<IData> ) => ILanguage<IData>;
+  tokens: (tokens: { [pattern: string]: TokenHandler<IData> }) => ILanguage<IData>;
+  data: (data: Partial<IData>) => ILanguage<IData>;
+  run: (code: string) => Promise<IState<IData>>;
+  runSynchronous: (code: string, 
+    onSuccess: (finalState: IState<IData>) => void, 
+    onError: (error: Error) => void
+    ) => void; 
+  eof: ((state: IState<IData>) => (boolean | IError) /* false => throws UnexpectedEOFError */);
+}
 type TokenHandler<IData> = 
 (state: IState<IData>, token: IToken) => (void 
   | IError 
   | ((state: IState<IData>, token: IToken) => (boolean | IError)));
-interface ILanguage<IData> {
-  /* constructor takes an optional options object of type IOptions */
-  token: (token: string, TokenHandler<IData> ) => ILanguage,
-  tokens: ({ [token: string]: TokenHandler<IData> }) => ILanguage,
-  data: (data: Partial<IData>) => ILanguage,
-  run: (code: string) => Promise<IState>,
-  runSynchronous: (code: string, 
-    onSuccess: (finalState: Istate<IData>) => void, 
-    onError: (error: Error) => void
-    ) => void; 
-  eof: (state: IState<IData>) => (boolean | IError) /* false => throws UnexpectedEOFError */,
-}
 interface IOptions {
   tokenDeliminators?: {name: string, deliminator: string}[], // Default is [{name: 'empty', deliminator: ''}]
 }
