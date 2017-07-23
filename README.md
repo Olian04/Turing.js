@@ -38,7 +38,7 @@ interface ILanguage<IData> {
     onSuccess: (finalState: Istate<IData>) => void, 
     onError: (error: Error) => void
     ) => void; 
-  eof: state: IState<IData> => (boolean | IError) /* false => throws UnexpectedEOFError */,
+  eof: (state: IState<IData>) => (boolean | IError) /* false => throws UnexpectedEOFError */,
 }
 interface IOptions {
   tokenDeliminators?: {name: string, deliminator: string}[], // Default is [{name: 'empty', deliminator: ''}]
