@@ -21,6 +21,9 @@ new Language<{ sum: number }>()
 
 ```ts
 /* Types */
+type Partial<T> = {
+    [P in keyof T]?: T[P];
+};
 type TokenHandler<IData> = 
 (state: IState<IData>, token: IToken) => (void 
   | IError 
@@ -29,7 +32,7 @@ interface ILanguage<IData> {
   /* constructor takes an optional options object of type IOptions */
   token: (token: string, TokenHandler<IData> ) => ILanguage,
   tokens: ({ [token: string]: TokenHandler<IData> }) => ILanguage,
-  data: (data: IData) => ILanguage,
+  data: (data: Partial<IData>) => ILanguage,
   run: (code: string) => Promise<IState>,
   runSynchronous: (code: string, 
     onSuccess: (finalState: Istate<IData>) => void, 
