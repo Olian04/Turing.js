@@ -63,6 +63,7 @@ brainfuck
     .catch(error => console.log(error));
 ```
 </details>
+<hr>
 </details>
 
 
@@ -128,6 +129,7 @@ brainfuck
     .catch(error => console.log(error));
 ```
 </details>
+<hr>
 </details>
 
 ## Update log
