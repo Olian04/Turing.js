@@ -99,6 +99,7 @@
             height: 100%;
             padding: 0;
             padding-left: 10px;
+            padding-right: 10px;
         }
         #input_data {
             position: relative;
@@ -107,6 +108,7 @@
             height: 100%;
             padding: 0;
             padding-left: 10px;
+            padding-right: 10px;
         }
         #input_code {
             position: relative;
@@ -115,6 +117,7 @@
             height: 100%;
             padding: 0;
             padding-left: 10px;
+            padding-right: 10px;
         }
     </style>
 </head>
@@ -144,13 +147,18 @@
     <script>
         let brainfuck = new Language()
             .tokens({
-                '+': state => { state.stack[state.index]++ },
-                '-': state => { state.stack[state.index]-- },
-                '>': state => { state.index++ },
-                '<': state => { state.index-- },
-                ',': state => { state.stack[state.index] = state.data.in.shift().charCodeAt(0) },
-                '.': state => { state.data.out.push(String.fromCharCode(state.stack[state.index])) },
-                '[': (state, token) => {
+                '+': function(state) { state.stack[state.index]++ },
+                '-': function(state) { state.stack[state.index]-- },
+                '>': function(state) { state.index++ },
+                '<': function(state) { state.index-- },
+                ',': function(state) { 
+                    if (state.data.in.length === 0) {
+                        throw Error('Insuficant input parameters');
+                    } 
+                    state.stack[state.index] = state.data.in.shift().charCodeAt(0) 
+                },
+                '.': function(state) { state.data.out.push(String.fromCharCode(state.stack[state.index])) },
+                '[': function(state, token) {
                     state.data.loops.push(token.position)
                     if (state.stack[state.index] === 0) {
                         return (state, token) => {
@@ -160,12 +168,12 @@
                         };
                     }
                 },
-                ']': (state, token) => { 
+                ']': function(state) { 
                     state.tokenPointer = state.data.loops.pop() - 1; 
                     // -1 in order to offset the auto increment done by turingjs
                 },
             })
-            .eof(state => {
+            .eof(function(state) {
                 return state.data.loops.length === 0;
             })
             .data({ in: [], out: [], loops: [] });
@@ -182,7 +190,7 @@
                     document.querySelector('#output_data').value = state.data.out.join('');
                 })
                 .catch(function(err) { 
-                    document.querySelector('#output_state').innerHTML = JSON.stringify(err, null, 2);
+                    document.querySelector('#output_state').innerHTML = err;
                     document.querySelector('#output_data').value = '';
                 })
         }
