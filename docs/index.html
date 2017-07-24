@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Turing.js</title>
+</head>
+<body>
+    <script src="../bin/turingjs.js"></script>
+    <script>
+        /* Super simple counter demo */
+        new Language()
+            .token('+', function(state) { state.data.sum++ })
+            .token('-', function(state) { state.data.sum-- })
+            .data({ sum: 0 })
+            .run('+--++-++++')
+            .then(function(state) { console.log(state.data.sum) })
+            .catch(function(err) { throw err });
+    </script>
+</body>
+</html>
