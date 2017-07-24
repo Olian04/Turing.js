@@ -1,0 +1,30 @@
+{
+  "name": "turing.js",
+  "version": "1.0.0",
+  "description": "Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [turing machine](https://en.wikipedia.org/wiki/Turing_machine).",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc  -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Olian04/Turing.js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Olian04/Turing.js/issues"
+  },
+  "homepage": "https://github.com/Olian04/Turing.js#readme",
+  "devDependencies": {
+    "@types/es6-promise": "0.0.32",
+    "@types/lodash": "^4.14.71",
+    "@types/typescript": "^2.0.0",
+    "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.71",
+    "lodash": "^4.17.4"
+  }
+}

@@ -122,3 +122,9 @@ programPromise
   .catch(error => console.log(error));
 ```
 </details>
+
+## Update log
+
+#### 0.1
+All basic components have been had their development started.
+A usable demo consisting of all Brainf**k instruction, except the loops, can be run.
