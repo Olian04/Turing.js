@@ -66,9 +66,9 @@ brainfuck
     .catch(error => console.log(error));
 ```
 </details>
-<hr>
 </details>
 
+<hr>
 
 <details open>
 <summary><b>Typescript</b></summary>
@@ -133,7 +133,6 @@ brainfuck
     .catch(error => console.log(error));
 ```
 </details>
-<hr>
 </details>
 
 ## Update log
