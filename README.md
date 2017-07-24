@@ -6,7 +6,7 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 
 ## API
 
-<details>
+<details open>
 <summary><b>ES5</b></summary>
 
 ```js
@@ -67,7 +67,7 @@ brainfuck
 </details>
 
 
-<details>
+<details open>
 <summary><b>Typescript</b></summary>
 
 ```ts
