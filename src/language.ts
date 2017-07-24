@@ -29,9 +29,18 @@ export class Language<T> {
 
     run(program: string): Promise<ReturnState<T>> {
       return new Promise<ReturnState<T>>((resolve, reject) => {
-        let executor: Execution<T> =  Object.create(this.exec);
-        executor.state = this.exec.getNewState();
-        resolve(executor.run(program));
+        setTimeout(() => { 
+          /* This needs to be deffered due to a bug in vscode 
+          See: https://stackoverflow.com/questions/45282653/why-does-vs-code-break-on-handled-exception-from-reject-in-promise/
+          */
+          try {
+            let executor: Execution<T> =  Object.create(this.exec);
+            executor.state = this.exec.getNewState();
+            resolve(executor.run(program));
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
       });
     }
 

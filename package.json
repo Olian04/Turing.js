@@ -4,7 +4,8 @@
   "description": "Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [turing machine](https://en.wikipedia.org/wiki/Turing_machine).",
   "main": "index.js",
   "scripts": {
-    "start": "tsc  -w"
+    "start": "tsc  -w",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,9 @@
   "devDependencies": {
     "@types/es6-promise": "0.0.32",
     "@types/lodash": "^4.14.71",
+    "@types/mocha": "^2.2.41",
     "@types/typescript": "^2.0.0",
+    "mocha": "^3.4.2",
     "typescript": "^2.4.2"
   },
   "dependencies": {
