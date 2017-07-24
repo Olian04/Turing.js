@@ -6,9 +6,7 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 
 ## API
 
-<details>
-<summary>Brainfuck demo</summary>
-
+### Typescript
 ```ts
 /* Super small counter demo */
 import { Language } from 'turingjs';
@@ -23,7 +21,7 @@ new Language<{ sum: number }>()
 ```
 
 <details>
-<summary>Typescript</summary>
+<summary>Brainfuck demo</summary>
 
 ```ts
 import { Language } from 'turingjs';
@@ -67,8 +65,6 @@ brainfuck
     .then(finalState => console.log(finalState.data.out.join(''))/* ADBECF */)
     .catch(error => console.log(error));
 ```
-</details>
-
 </details>
 
 ## Update log
