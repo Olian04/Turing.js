@@ -6,6 +6,9 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 
 ## Install
 
+__CDN:__ https://cdn.rawgit.com/Olian04/Turing.js/master/bin/turingjs.js <br>
+__npm:__ TBD
+
 ## API
 
 <details open>
