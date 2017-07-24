@@ -1,21 +1,15 @@
-import { IOptions, IToken, IError, IDeliminator, TokenHandler, TokenHandlers, ReturnState, EOFHandler, ErrorLevel, Partial } from './interfaces';
 import * as _ from 'lodash';
 
+import { IToken, TokenHandler, SkipHandler, TokenHandlers, IState, EOFHandler } from './interfaces';
+import { UnexpectedEOFException, Exception } from './exceptions';
+
 export class Execution<T> {
-    state: ReturnState<T>;
+    state: IState<T>;
     tokenHandlers: TokenHandlers<T> = {};
     eofHandler: EOFHandler<T> = () => true;
-    options: IOptions;
+    skipHandler: SkipHandler<T> = null;
 
-    constructor(options?: IOptions) {
-        this.options = options || {
-            /* Default options */ 
-            tokenCaseSensitive: true,
-            tokenDeliminators: [{
-                deliminator: '',
-                name: 'Empty'
-            }]
-        };
+    constructor() {
         this.tokenHandlers = {};
         this.eofHandler = () => true;
         this.state = {
@@ -26,8 +20,8 @@ export class Execution<T> {
         };
     }
 
-    getNewState(): ReturnState<T> {
-        let s: ReturnState<T> = {
+    getNewState(): IState<T> {
+        let s: IState<T> = {
             tokenPointer: 0,
             data: _.cloneDeep(this.state.data),
             index: 0,
@@ -37,46 +31,64 @@ export class Execution<T> {
     }
 
     private delegateToken(token: IToken) {
-        this.tokenHandlers[token.value](this.state, token);
-
-        if (this.state.index >= this.state.stack.length) {
-            this.state.stack.push(0); // Add space to the right on the "tape" in the index excedes the current length
+        if (!(token.value in this.tokenHandlers)) {
+            throw new Exception('UnknownTokenException', token.value);
         }
-
-        return true; // Should execution continue?
+        let handlerResp = this.tokenHandlers[token.value](this.state, token);
+        if (typeof handlerResp !== 'undefined') {
+            this.skipHandler = handlerResp;
+        }
     }
 
-    run(code: string): ReturnState<T> {
-        let tokens = new Tokenizer(Object.keys(this.tokenHandlers), this.options.tokenDeliminators).run(code);
+    private delegateSkip(token: IToken) {
+         if (this.skipHandler !== null) {
+            let skipResp = this.skipHandler(this.state, token);
+            if (skipResp) {
+                this.skipHandler = null;
+            }
+        }
+    }
+
+    private step(token: IToken) {
+        if (this.skipHandler !== null) {
+            this.delegateSkip(token);
+        } else {
+            this.delegateToken(token);
+        }
+
+        this.state.tokenPointer++; // Move the token pointer to the next token
+
+        if (this.state.index >= this.state.stack.length) {
+            this.state.stack.push(0); // Add space to the right on the "tape" if the index exceeds the current length
+        }
+    }
+
+    run(code: string): IState<T> {
+        let tokens = tokenize(code);
 
         while (this.state.tokenPointer < tokens.length) {
-            this.delegateToken(tokens[this.state.tokenPointer]);
-            this.state.tokenPointer++;
+            if (this.state.tokenPointer < 0) {
+                throw new Exception('IllegalTokenPointerException', 'tokenPointer < 0');
+            }
+            this.step(tokens[this.state.tokenPointer]); // One step 
         }
-        let isOkEof = this.eofHandler(this.state);
+
+        let eofResp = this.eofHandler(this.state);
+        if (!eofResp) {
+            throw new UnexpectedEOFException();
+        }
 
         return this.state;
     }
 }
 
-class Tokenizer {
-    tokens: string[];
-    deliminators: IDeliminator[];
-    constructor(tokens: string[], deliminators: IDeliminator[]) {
-        this.tokens = tokens;
-        this.deliminators = deliminators;
-    }
-    run(code: string): IToken[] {
-        let tok = code.split(this.deliminators[0].deliminator);
-        return tok.map((e, i) => {
-            let t: IToken = {
-                nextDeliminator: this.deliminators[0].deliminator,
-                previousDeliminator: '',
-                position: i,
-                value: e
-            };
-            return t;
-        });
-        // TODO: Implement the tokenizer for real (all above is just temporary)
-    }
+export function tokenize(code: string): IToken[] {
+    let tok = code.split('');
+    return tok.map((e, i) => {
+        let t: IToken = {
+            position: i,
+            value: e
+        };
+        return t;
+    });
 }
