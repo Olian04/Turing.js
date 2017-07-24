@@ -4,6 +4,8 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 > A Turing machine is an abstract machine that manipulates symbols on a strip of tape according to a table of rules.
 > The machine operates on an infinite memory tape divided into discrete cells. The machine positions its head over a cell and "reads"  the symbol there. Then, as per the symbol and its present place in a finite table of user-specified instructions, the machine (i) writes a symbol (e.g. a digit or a letter from a finite alphabet) in the cell, then (ii) either moves the tape one cell left or right, then (iii) (as determined by the observed symbol and the machine's place in the table) either proceeds to a subsequent instruction or halts the computation.
 
+## Install
+
 ## API
 
 <details open>
@@ -11,9 +13,9 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 
 ```js
 /* Super small counter demo */
-let tjs = require('turingjs');
+let Language = require('turingjs').Language;
 
-new tjs.Language()
+new Language()
     .token('+', state => { state.data.sum++ })
     .token('-', state => { state.data.sum-- })
     .data({ sum: 0 })
@@ -26,9 +28,10 @@ new tjs.Language()
 <summary>Brainfuck demo</summary>
 
 ```js
-let tjs = require('turingjs');
+/* The full Brainfuck language */
+let Language = require('turingjs').Language;
 
-let brainfuck = new tjs.Language()
+let brainfuck = new Language()
     .tokens({
         '+': state => { state.stack[state.index]++ },
         '-': state => { state.stack[state.index]-- },
@@ -87,6 +90,7 @@ new Language<{ sum: number }>()
 <summary>Brainfuck demo</summary>
 
 ```ts
+/* The full Brainfuck language */
 import { Language } from 'turingjs';
 
 interface BFData {
