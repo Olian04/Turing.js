@@ -11,7 +11,7 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 
 ```js
 /* Super small counter demo */
-let tjs = require('./bin/turingjs');
+let tjs = require('turingjs');
 
 new tjs.Language()
     .token('+', state => { state.data.sum++ })
@@ -26,7 +26,7 @@ new tjs.Language()
 <summary>Brainfuck demo</summary>
 
 ```js
-let tjs = require('./bin/turingjs');
+let tjs = require('turingjs');
 
 let brainfuck = new tjs.Language()
     .tokens({
