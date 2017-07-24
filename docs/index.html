@@ -4,18 +4,189 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Turing.js</title>
+
+    <style>
+        body {
+            background-color: #232323;
+        }
+        #wrapper {
+            position: absolute;
+            color: #232332;
+            top: 50%;
+            left: 50%;
+            width: 1000px;
+            height: 500px;
+            transform: translate(-50%, -50%);
+        }
+        .container {
+            background-color: #f2f3f5;
+            border-radius: 20px;
+            box-shadow: inset 0 0 10px #232323;
+        }
+        #right {
+            position: relative;
+            float: right;
+            display: grid;
+            --grid-paddig: 15px;
+            --grid-gap: 10px;
+            grid-template-columns: var(--grid-paddig) auto var(--grid-paddig);
+            grid-template-rows: var(--grid-paddig) 50px auto 25px 25px 25px var(--grid-paddig);
+            grid-gap: var(--grid-gap);
+            width: 60%;
+            height: 100%;
+        }
+        #left {
+            position: relative;
+            float: left;
+            display: grid;
+            --grid-paddig: 15px;
+            --grid-gap: 10px;
+            grid-template-columns: var(--grid-paddig) 30px auto var(--grid-paddig);
+            grid-template-rows: var(--grid-paddig) 50px repeat(8, 1fr) var(--grid-paddig);
+            grid-gap: var(--grid-gap);
+
+            width: 38%;
+            height: 100%;
+        }
+        .heading {
+            position: relative;
+            text-align: center;
+            /* grid-column: 2; set on element*/
+            grid-row: 2;
+            font-size: 4rem;
+            margin: auto;
+            transform: translate(0, -30%);
+        }
+        .token {
+            grid-column: 2;
+            padding: 0;
+            margin: 0;
+
+            font-size: 1.5rem;
+            font-family: monospace;
+        }
+        .description {
+            grid-column: 3;
+            padding: 0;
+            margin: 0;
+
+            font-size: 1.5rem;
+            font-family: monospace;
+        }
+        .field {
+            background-color: white;
+            border-radius: 20px;
+            border-color: #232323;
+            border-width: 2px;
+            border-style: solid;
+            padding: 10px;
+
+            font-size: 1.5rem;
+            font-family: monospace;
+        }
+        #output_state {
+            position: relative;
+            grid-column: 2;
+            grid-row: 3;
+
+        }
+        #output_data {
+            position: relative;
+            grid-column: 2;
+            grid-row: 4;
+            height: 100%;
+            padding: 0;
+            padding-left: 10px;
+        }
+        #input_data {
+            position: relative;
+            grid-column: 2;
+            grid-row: 5;
+            height: 100%;
+            padding: 0;
+            padding-left: 10px;
+        }
+        #input_code {
+            position: relative;
+            grid-column: 2;
+            grid-row: 6;
+            height: 100%;
+            padding: 0;
+            padding-left: 10px;
+        }
+    </style>
 </head>
 <body>
+    <div id="wrapper">
+        <div class="container" id="right">
+            <p class="heading" style="grid-column: 2">Turing.js</p>
+            <div class="field" id="output_state"></div>
+            <input class="field" id="output_data" onkeyup="run();" type="text" name="code" value="" disabled>            
+            <input class="field" id="input_data" onkeyup="run();" type="text" name="code" value="ABC">
+            <input class="field" id="input_code" onkeyup="run();" type="text" name="code" value="+++[->,.+++.<]">
+        </div>
+        <div class="container" id="left">
+            <p class="heading" style="grid-column: 2 / 3">Brainfuck</p>
+            <p class="token" style="grid-row: 3"><b>+</b></p><p class="description" style="grid-row: 3">Increment data</p>
+            <p class="token" style="grid-row: 4"><b>-</b></p><p class="description" style="grid-row: 4">Decrement data</p>
+            <p class="token" style="grid-row: 5"><b>&gt;</b></p><p class="description" style="grid-row: 5">Increment pointer</p>
+            <p class="token" style="grid-row: 6"><b>&lt;</b></p><p class="description" style="grid-row: 6">Decrement pointer</p>
+            <p class="token" style="grid-row: 7"><b>[</b></p><p class="description" style="grid-row: 7">Start loop</p>
+            <p class="token" style="grid-row: 8"><b>]</b></p><p class="description" style="grid-row: 8">End loop</p>
+            <p class="token" style="grid-row: 9"><b>,</b></p><p class="description" style="grid-row: 9">Read char</p>
+            <p class="token" style="grid-row: 10"><b>.</b></p><p class="description" style="grid-row: 10">Write char</p>
+        </div>
+    </div>
+
     <script src="./turingjs.js"></script>
     <script>
+        let brainfuck = new Language()
+            .tokens({
+                '+': state => { state.stack[state.index]++ },
+                '-': state => { state.stack[state.index]-- },
+                '>': state => { state.index++ },
+                '<': state => { state.index-- },
+                ',': state => { state.stack[state.index] = state.data.in.shift().charCodeAt(0) },
+                '.': state => { state.data.out.push(String.fromCharCode(state.stack[state.index])) },
+                '[': (state, token) => {
+                    state.data.loops.push(token.position)
+                    if (state.stack[state.index] === 0) {
+                        return (state, token) => {
+                            if (token.value === '[') { state.data.loops.push(NaN) }
+                            if (token.value === ']') { state.data.loops.pop() }
+                            return state.data.loops.length === 0;
+                        };
+                    }
+                },
+                ']': (state, token) => { 
+                    state.tokenPointer = state.data.loops.pop() - 1; 
+                    // -1 in order to offset the auto increment done by turingjs
+                },
+            })
+            .eof(state => {
+                return state.data.loops.length === 0;
+            })
+            .data({ in: [], out: [], loops: [] });
+
+        function run() {
+            let code = document.querySelector('#input_code').value;
+            let data = document.querySelector('#input_data').value;
+            brainfuck.data({
+                    in: data.split('')
+                })
+                .run(code)
+                .then(function(state) { 
+                    document.querySelector('#output_state').innerHTML = JSON.stringify(state, null, 2); 
+                    document.querySelector('#output_data').value = state.data.out.join('');
+                })
+                .catch(function(err) { 
+                    document.querySelector('#output_state').innerHTML = JSON.stringify(err, null, 2);
+                    document.querySelector('#output_data').value = '';
+                })
+        }
+        run();
         /* Super simple counter demo */
-        new Language()
-            .token('+', function(state) { state.data.sum++ })
-            .token('-', function(state) { state.data.sum-- })
-            .data({ sum: 0 })
-            .run('+--++-++++')
-            .then(function(state) { console.log(state.data.sum) })
-            .catch(function(err) { throw err });
+        
     </script>
 </body>
 </html>
