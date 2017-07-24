@@ -1,9 +1,8 @@
-let turingjs = require('./bin/turingjs');
-let Language = turingjs.Language;
+let tjs = require('./bin/turingjs');
 
 
 /* Super simple counter demo */
-new Language()
+new tjs.Language()
     .token('+', state => { state.data.sum++ })
     .token('-', state => { state.data.sum-- })
     .data({ sum: 0 })
@@ -13,7 +12,7 @@ new Language()
 
 
 /* The full Brainfuck language */
-let brainfuck = new Language()
+let brainfuck = new tjs.Language()
     .tokens({
         '+': state => { state.stack[state.index]++ },
         '-': state => { state.stack[state.index]-- },
