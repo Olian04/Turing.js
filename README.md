@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/Olian04/Turing.js/tree/master.svg?style=shield&circle-token=b901a939d226b2f1a28e5d2823983da26854ea98)](https://circleci.com/gh/Olian04/Turing.js/tree/master)
-
+![Npm dependancies](https://david-dm.org/olian04/turing.js.svg)
 
 # [Turing.js](https://olian04.github.io/Turing.js/)
 Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [turing machine](https://en.wikipedia.org/wiki/Turing_machine).
