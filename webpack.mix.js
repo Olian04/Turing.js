@@ -12,7 +12,6 @@ let mix = require('laravel-mix');
  */
 
 mix.ts('src/turingjs.ts', 'bin/turingjs.js')
-    .combine('dist/**/*.d.ts', 'bin/turingjs.d.ts')
     .copy('bin/turingjs.js', 'docs/');
 
 // Full API

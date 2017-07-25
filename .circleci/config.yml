@@ -32,7 +32,10 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
+      
+      # compile ts code
+      - run: npm run build_node
+
       # run tests!
       - run: npm test
 

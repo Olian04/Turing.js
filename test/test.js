@@ -20,13 +20,13 @@ describe('Turingjs', function() {
 
 // Tests that all exported classes behave as expected
 describe('Class', function() {
-    let turingjs = require('../dist/turingjs');
+    let Language = require('../dist/turingjs').Language;
     describe('Language', function() {
         it('should be an object', function() {
-            assert.equal(typeof new turingjs.Language(), 'object');
+            assert.equal(typeof new Language(), 'object');
         });
         describe('#exports', function() {
-            let lang = new turingjs.Language();
+            let lang = new Language();
             it('.token', function() {
                 assert.equal(typeof lang.token, 'function');
             });
@@ -48,7 +48,7 @@ describe('Class', function() {
         });
         describe('Synchronous', function() {
             describe('empty', function() {
-                let lang = new turingjs.Language();
+                let lang = new Language();
                 it('', function() {
                     lang.runSynchronous('', state => {
                         assert.deepEqual(state.data, {});
@@ -58,7 +58,7 @@ describe('Class', function() {
                 });
             });
             describe('error', function() {
-                let lang = new turingjs.Language();
+                let lang = new Language();
                 it('err', function() {
                     lang.runSynchronous('err', state => {
                         assert.fail();
@@ -68,7 +68,7 @@ describe('Class', function() {
                 });
             });
             describe('sum (+-)', function() {
-                let lang = new turingjs.Language()
+                let lang = new Language()
                     .tokens({
                         '+': state => { state.data.sum++},
                         '-': state => { state.data.sum-- },
@@ -99,7 +99,7 @@ describe('Class', function() {
         });
         describe('Asynchronous', function() {
             describe('empty', function() {
-                let lang = new turingjs.Language();
+                let lang = new Language();
                 it('', function() {
                     lang.run('')
                         .then( state => {
@@ -111,7 +111,7 @@ describe('Class', function() {
                 });
             });
             describe('error', function() {
-                let lang = new turingjs.Language();
+                let lang = new Language();
                 it('err', function() {
                     lang.run('err')
                         .then( state => {
@@ -123,7 +123,7 @@ describe('Class', function() {
                 });
             });
             describe('sum (+-)', function() {
-                let lang = new turingjs.Language()
+                let lang = new Language()
                     .tokens({
                         '+': state => { state.data.sum++},
                         '-': state => { state.data.sum-- },
