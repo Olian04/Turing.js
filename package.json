@@ -5,7 +5,7 @@
   "main": "bin/turingjs.js",
   "scripts": {
     "start": "tsc  -w",
-    "test": "mocha",
+    "test": "mocha --recursive",
     "build_node": "tsc",
     "build_web": "NODE_ENV=production webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },

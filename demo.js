@@ -1,4 +1,4 @@
-let Language = require('turingjs').Language;
+let Language = require('./dist/turingjs').Language;
 
 
 /* Super simple counter demo */
@@ -13,7 +13,7 @@ new Language()
 
 /* The full Brainfuck language */
 let brainfuck = new Language()
-    .tokens({
+    .token({
         '+': state => { state.stack[state.index]++ },
         '-': state => { state.stack[state.index]-- },
         '>': state => { state.index++ },
@@ -35,7 +35,7 @@ let brainfuck = new Language()
             // -1 in order to offset the auto increment done by turingjs
         },
     })
-    .eof(state => {
+    .on('eof', state => {
         return state.data.loops.length === 0;
     })
     .data({ in: [], out: [], loops: [] });

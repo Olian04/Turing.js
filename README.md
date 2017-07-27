@@ -38,7 +38,7 @@ new Language()
 let Language = require('turingjs').Language;
 
 let brainfuck = new Language()
-    .tokens({
+    .token({
         '+': state => { state.stack[state.index]++ },
         '-': state => { state.stack[state.index]-- },
         '>': state => { state.index++ },
@@ -60,7 +60,7 @@ let brainfuck = new Language()
             // -1 in order to offset the auto increment done by turingjs
         },
     })
-    .eof(state => {
+    .on('eof', state => {
         return state.data.loops.length === 0;
     })
     .data({ in: [], out: [], loops: [] });
@@ -105,7 +105,7 @@ interface BFData {
   loops: number[]
 }
 let brainfuck = new Language<BFData>()
-    .tokens({
+    .token({
         '+': state => { state.stack[state.index]++ },
         '-': state => { state.stack[state.index]-- },
         '>': state => { state.index++ },
@@ -127,7 +127,7 @@ let brainfuck = new Language<BFData>()
             // -1 in order to offset the auto increment done by turingjs
         },
     })
-    .eof(state => {
+    .on('eof', state => {
         return state.data.loops.length === 0;
     })
     .data({ in: [], out: [], loops: [] });
