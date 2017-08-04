@@ -121,8 +121,5 @@ A usable demo consisting of all Brainf**k instruction can be run.
 All basic components have been had their development started.
 A usable demo consisting of all Brainf**k instruction, except the loops, can be run.
 
-## TODO
-* Write more tests
-
 ## Credits
 * Logo: https://logomakr.com/6LYfIX
