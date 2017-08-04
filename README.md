@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/Olian04/Turing.js/tree/master.svg?style=shield&circle-token=b901a939d226b2f1a28e5d2823983da26854ea98)](https://circleci.com/gh/Olian04/Turing.js/tree/master)
 ![Npm dependancies](https://david-dm.org/olian04/turing.js.svg)
 
-![Turing.js logo](https://i.imgur.com/Y2g0yiA.png)
+[![Turing.js logo](https://i.imgur.com/Y2g0yiA.png)](https://olian04.github.io/Turing.js/)
 
 # [Turing.js](https://olian04.github.io/Turing.js/)
 Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [turing machine](https://en.wikipedia.org/wiki/Turing_machine).
@@ -23,7 +23,7 @@ let Language = require('turingjs').Language;
 new Language()
     .token('+', state => { state.data.sum++ })
     .token('-', state => { state.data.sum-- })
-    .data({ sum: 0 })
+    .data('sum', 0 )
     .run('+--++-++++')
     .then(state => console.log(state.data.sum)/* 4 */)
     .catch(err => { throw err });
@@ -66,6 +66,39 @@ brainfuck
     .catch(error => console.log(error));
 ```
 </details>
+
+## Developing
+
+### Built with
+
+* [Lodash](https://lodash.com/)
+* [Typescript](https://www.typescriptlang.org/)
+* [Mocha](https://mochajs.org/)
+
+### Prerequisites
+
+* [Git](https://git-scm.com/)
+* [Node.js](https://nodejs.org/en/)
+
+### Setting up dev
+
+```
+git clone git@github.com:Olian04/Turing.js.git
+cd Turing.js
+npm install
+```
+
+### Building
+
+`npm start`
+
+## Tests 
+
+`npm run test`
+
+## Api reference
+
+_I'm working on it, for now look at the demos above._
 
 ## Update log
 
