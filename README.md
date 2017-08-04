@@ -23,7 +23,7 @@ let Language = require('turingjs').Language;
 new Language()
     .token('+', state => { state.data.sum++ })
     .token('-', state => { state.data.sum-- })
-    .data('sum', 0 )
+    .data('sum', 0)
     .run('+--++-++++')
     .then(state => console.log(state.data.sum)/* 4 */)
     .catch(err => { throw err });
@@ -98,7 +98,18 @@ npm install
 
 ## Api reference
 
-_I'm working on it, for now look at the demos above._
+At the core of every Turing.js language lies a Language object, this object keeps track of what rules your language abides by. It is also this Language object that takes care of executing code written in your new language.
+
+The `Language` object has 4 functions, each with several overloads, `token`, `data`, `on`, and `run`.
+
+Function | Description
+------|------------
+`token` | Adds TokenHandlers, these are the bread and butter of your languages grammar.
+`data` | Provides a way of adding custom state properties to your language's interpreter.
+`on` | Adds event handlers for various events fired during an execution of code.
+`run` | Runs some code written in your new language.
+
+_I'm working on a full documentation page, for now look at the demos above._
 
 ## Update log
 
