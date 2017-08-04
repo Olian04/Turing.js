@@ -16,6 +16,7 @@ __npm:__ TBD
 
 ---
 
+__Live demo:__ [Turing.js](https://olian04.github.io/Turing.js/) <br>
 __Docs:__ [TBD](#api-reference)
 
 ## Demo
