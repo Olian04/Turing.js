@@ -22,14 +22,18 @@ export type TagFunction<T> = (strings: TemplateStringsArray) => T; // This is th
  * @param {Language<T>} language 
  * @returns {TagFunction<Partial<T>>} 
  */
-export function GetTagFunction<T>(language: Language<T>): TagFunction<Partial<T>> {
+export function GetTagFunction<T>(language: Language<T>, errorCallback?: (error: Error) => void): TagFunction<Partial<T>> {
     return ([code]) => {
         let result: Partial<T>;
         language.run(code, state => {
             result = state.data; // TODO: Decide, should the tag function return the state, or just the data?
         }, err => { 
-            /* Since tag function syntax only accept one parameter we need to make sure the runtime explodes on error */ 
-            throw err; 
+            if (typeof errorCallback === 'function') {
+                errorCallback(err);
+            } else {
+                /* Since the tag function syntax only accept one parameter we need to make sure the runtime explodes on error */ 
+                throw err; 
+            }
         });
         return result;
     };
