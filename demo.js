@@ -1,4 +1,7 @@
-let Language = require('./dist/turingjs').Language;
+const turing = require('./dist/turingjs');
+const Language = turing.Language;
+const GetTagFunction = turing.GetTagFunction;
+const Skip = turing.Skip;
 
 new Language()
     .on('unexpectedToken', (state, token) => { console.log(token); return true; })
@@ -37,14 +40,10 @@ let brainfuck = new Language()
         ',': state => { state.stack[state.index] = state.data.in.shift().charCodeAt(0) },
         '.': state => { state.data.out.push(String.fromCharCode(state.stack[state.index])) },
         '[': (state, token) => {
-            state.data.loops.push(token.position)
             if (state.stack[state.index] === 0) {
-                return (state, token) => {
-                    if (token.value === '[') { state.data.loops.push(NaN) }
-                    if (token.value === ']') { state.data.loops.pop() }
-                    return state.data.loops.length === 0;
-                };
+                return Skip.until.balanced('[', ']', 1);
             }
+            state.data.loops.push(token.position);
         },
         ']': (state, token) => { 
             state.tokenPointer = state.data.loops.pop() - 1; 
@@ -61,3 +60,8 @@ brainfuck
     .run('+++[->,.+++.<]')
     .then(finalState => console.log(finalState.data.out.join(''))/* ADBECF */)
     .catch(error => console.log(error));
+
+// Same thing as above, but using a tag function
+let bf = GetTagFunction(brainfuck);
+let res = bf`+++[->,.+++.<]`;
+console.log(res.out.join(''));

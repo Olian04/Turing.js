@@ -23,7 +23,7 @@ __Docs:__ [TBD](#api-reference)
 
 ```js
 /* Super small counter demo */
-let Language = require('turingjs').Language;
+import { Language } from 'turingjs';
 
 new Language()
     .token('+', state => { state.data.sum++ })
@@ -39,7 +39,7 @@ new Language()
 
 ```js
 /* The full Brainfuck language */
-let Language = require('turingjs').Language;
+import { Language, GetTagFunction, Skip } from 'turingjs';
 
 let brainfuck = new Language()
     .token({
@@ -51,24 +51,29 @@ let brainfuck = new Language()
         '.': state => { state.data.out.push(String.fromCharCode(state.stack[state.index])) },
         ']': (state, token) => { state.tokenPointer = state.data.loops.pop() - 1 },
         '[': (state, token) => {
-            state.data.loops.push(token.position)
             if (state.stack[state.index] === 0) {
-                return (state, token) => {
-                    if (token.value === '[') { state.data.loops.push(NaN) }
-                    if (token.value === ']') { state.data.loops.pop() }
-                    return state.data.loops.length === 0;
-                };
+                return Skip.until.balanced('[', ']', 1);
             }
+            state.data.loops.push(token.position)
         }
     })
     .on('eof', state => state.data.loops.length === 0)
     .data({ in: [], out: [], loops: [] });
 
+// Running brainfuck code
 brainfuck
     .data({ in: 'ABC'.split('') })
     .run('+++[->,.+++.<]')
     .then(finalState => console.log(finalState.data.out.join(''))/* ADBECF */)
     .catch(error => console.log(error));
+
+
+// Same thing as above, but using a tag function
+let bf = GetTagFunction(brainfuck);
+
+let res = bf`+++[->,.+++.<]`; // <---
+
+console.log(res.out.join(''));
 ```
 </details>
 

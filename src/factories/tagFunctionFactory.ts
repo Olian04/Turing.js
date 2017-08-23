@@ -12,7 +12,7 @@ export type ExecutionTag<T> = (strings: TemplateStringsArray) => T; // This is t
  * 
  * let count = GetTagFunction(counterLanguage);
  * 
- * let result = count`++-++`;
+ * let result = count\`++-++\`;
  * 
  * console.log(result.sum);
  * 

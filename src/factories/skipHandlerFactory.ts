@@ -7,6 +7,19 @@ export class SkipUntilFactory {
         };
     }
 
+    balanced(incrementToken: string, decrementToken: string, initialBalance: number) {
+        let balance = initialBalance;
+        return (state, token) => {
+            if (token.value === incrementToken) { 
+                balance += 1;
+            }
+            else if (token.value === decrementToken) { 
+                balance -= 1;
+            }
+            return balance === 0;
+        };
+    }
+
     false<T>(callback: (state: IState<T>, token?: IToken) => boolean): SkipHandler<T> {
         return this.true((s, t) => !callback(s, t));
     }
