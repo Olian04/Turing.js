@@ -12,6 +12,12 @@ export class UnexpectedEOFException extends Exception {
     }
 }
 
+export class EventRefusedException extends Exception {
+    constructor(msg?: string) {
+        super('EventRefusedException', msg); 
+    }
+}
+
 export class NotImplementedException extends Exception {
     constructor(msg?: string) {
         super('NotImplementedException', msg); 

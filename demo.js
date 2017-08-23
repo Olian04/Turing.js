@@ -1,5 +1,10 @@
 let Language = require('./dist/turingjs').Language;
 
+new Language()
+    .on('unexpectedToken', (state, token) => { console.log(token); return true; })
+    .token('+', (token, state) => {})
+    .run('++-+--+')
+    .then(state => console.log(state));
 
 /* Super simple counter demo */
 new Language()

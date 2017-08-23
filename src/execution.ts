@@ -1,18 +1,15 @@
 import * as _ from 'lodash';
 
-import { IToken, TokenHandler, SkipHandler, TokenHandlers, IState, EOFHandler } from './interfaces';
-import { UnexpectedEOFException, Exception } from './exceptions';
+import { IToken, TokenHandler, SkipHandler, TokenHandlers, IState, EventHandler, LanguageEvent, EventHandlers } from './interfaces';
+import { Exception, EventRefusedException, UnexpectedEOFException } from './exceptions';
 
 export class ExecutionState<T> {
     state: IState<T>;
+    eventHandlers: EventHandlers<T> = {};
     tokenHandlers: TokenHandlers<T> = {};
-    eofHandler: EOFHandler<T> = () => true;
     skipHandler: SkipHandler<T> = null;
-    unexpectedTokenHandler: TokenHandler<T> = null;
 
     constructor() {
-        this.tokenHandlers = {};
-        this.eofHandler = () => true;
         this.state = {
             tokenPointer: 0,
             data: {},
@@ -28,15 +25,25 @@ export class ExecutionState<T> {
     }
 }
 
+export function handleEvent<T>(executionState: ExecutionState<T>, token: IToken, event: LanguageEvent, exceptionIfFail: Exception) {
+    if ( (event in executionState.eventHandlers) && !(executionState.eventHandlers[event.toString()](executionState.state, token)) ) {
+        // If the event returns false
+        throw exceptionIfFail;
+    }
+}
 
 export function delegateToken<T>(executionState: ExecutionState<T>, token: IToken) {
     if (!(token.value in executionState.tokenHandlers)) {
-        throw new Exception('UnknownTokenException', token.value);
-    }
-    let handlerResp = executionState.tokenHandlers[token.value](executionState.state, token);
-    if (typeof handlerResp !== 'undefined') {
-        // A skip handler got returned by a token handler
-        executionState.skipHandler = handlerResp;
+        handleEvent(executionState, token,
+            LanguageEvent.unexpectedToken, 
+            new Exception('UnknownTokenException', token.value)
+        );
+    } else {
+        let handlerResp = executionState.tokenHandlers[token.value](executionState.state, token);
+        if (typeof handlerResp !== 'undefined') {
+            // A skip handler got returned by a token handler
+            executionState.skipHandler = handlerResp;
+        }
     }
 }
 
@@ -59,13 +66,6 @@ export function updateStateSize<T>(executionState: ExecutionState<T>) {
     }
 }
 
-export function handleEOF<T>(executionState: ExecutionState<T>) {
-    let eofResp = executionState.eofHandler(executionState.state);
-    if (!eofResp) {
-        throw new UnexpectedEOFException();
-    }
-}
-
 export function executeToken<T>(executionState: ExecutionState<T>, token: IToken) {
     if (executionState.skipHandler !== null) {
         delegateSkip(executionState, token);
@@ -85,7 +85,11 @@ export function executeTokens<T>(executionState: ExecutionState<T>, tokens: ITok
         executeToken(executionState, tokens[executionState.state.tokenPointer]);
     }
 
-    handleEOF(executionState);
+    // Handle eof event
+    handleEvent(executionState, null,
+        LanguageEvent.eof, 
+        new UnexpectedEOFException()
+    );
 }
 
 export function tokenizeString(code: string): IToken[] {
