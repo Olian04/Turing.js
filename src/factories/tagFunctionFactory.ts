@@ -1,6 +1,6 @@
 import { Language } from '../language';
 
-export type ExecutionTag<T> = (strings: TemplateStringsArray) => T; // This is the default spec for a tag function (defined by mozilla)
+export type TagFunction<T> = (strings: TemplateStringsArray) => T; // This is the default spec for a tag function (defined by mozilla)
 
 /**
  * A tag function is a function usually used in templating languages, and is used in front of a string
@@ -20,12 +20,17 @@ export type ExecutionTag<T> = (strings: TemplateStringsArray) => T; // This is t
  * @export
  * @template T 
  * @param {Language<T>} language 
- * @returns {ExecutionTag<Partial<T>>} 
+ * @returns {TagFunction<Partial<T>>} 
  */
-export function GetTagFunction<T>(language: Language<T>): ExecutionTag<Partial<T>> {
+export function GetTagFunction<T>(language: Language<T>): TagFunction<Partial<T>> {
     return ([code]) => {
         let result: Partial<T>;
-        language.run(code, state => result = state.data);
+        language.run(code, state => {
+            result = state.data; // TODO: Decide, should the tag function return the state, or just the data?
+        }, err => { 
+            /* Since tag function syntax only accept one parameter we need to make sure the runtime explodes on error */ 
+            throw err; 
+        });
         return result;
     };
 }
