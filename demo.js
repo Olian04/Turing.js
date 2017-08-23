@@ -16,6 +16,17 @@ new Language()
     .catch(err => { throw err });
 
 
+// Tag functions
+let counterLanguage = new Language()
+    .token('+', state => { state.data.sum++ })
+    .token('-', state => { state.data.sum-- })
+    .data({ sum: 0 });
+
+let count = GetTagFunction(counterLanguage);
+let result = count`++-++`; // Generated tag function
+console.log(result.sum);
+
+
 /* The full Brainfuck language */
 let brainfuck = new Language()
     .token({
