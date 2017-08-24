@@ -4,8 +4,15 @@ import { ExecutionState, executeTokens, tokenizeString } from './execution';
 export class Language<T> {
     private executionStateStore: ExecutionState<T>;
 
-    constructor() {
-        this.executionStateStore = new ExecutionState();
+    constructor();
+    constructor(baseLanguage: Language<T>);
+    constructor(...args) {
+        if (args.length === 1) {
+            let baseLanguage: Language<T> = args[0];
+            this.executionStateStore = baseLanguage.executionStateStore.clone();
+        } else {
+            this.executionStateStore = new ExecutionState();
+        }
     }
 
     /**
