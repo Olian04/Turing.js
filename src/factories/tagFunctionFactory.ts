@@ -1,8 +1,10 @@
 import { Language } from '../language';
+import { IState } from '../interfaces';
 
-export type TagFunction<T> = (strings: TemplateStringsArray) => T; // This is the default spec for a tag function (defined by mozilla)
+export type TagFunction<T> = (strings: TemplateStringsArray, ...data: Partial<T>[]) => IState<T>; // This is the default spec for a tag function (defined by mozilla)
 
 /**
+ * 
  * A tag function is a function usually used in templating languages, and is used in front of a string
  * 
  * let counterLanguage = new Language<{ sum: number }>()
@@ -16,17 +18,23 @@ export type TagFunction<T> = (strings: TemplateStringsArray) => T; // This is th
  * 
  * console.log(result.sum);
  * 
- * 
  * @export
  * @template T 
  * @param {Language<T>} language 
- * @returns {TagFunction<Partial<T>>} 
+ * @param {(error: Error) => void} [errorCallback] 
+ * @returns {TagFunction<T>} 
  */
-export function GetTagFunction<T>(language: Language<T>, errorCallback?: (error: Error) => void): TagFunction<Partial<T>> {
-    return ([code]) => {
-        let result: Partial<T>;
+export function GetTagFunction<T>(language: Language<T>, errorCallback?: (error: Error) => void): TagFunction<T> {
+    return (codeFragments, ...data: Partial<T>[]) => {
+        let code = codeFragments.reduce((res, c) => {
+            return ''+res+''+c;
+        }, '');
+        data.forEach(e => {
+            language.data(e);
+        });
+        let result: IState<T>;
         language.run(code, state => {
-            result = state.data; // TODO: Decide, should the tag function return the state, or just the data?
+            result = state; 
         }, err => { 
             if (typeof errorCallback === 'function') {
                 errorCallback(err);

@@ -69,11 +69,10 @@ brainfuck
 
 
 // Same thing as above, but using a tag function
+let brainfuckClone = new Language(brainfuck); // This step is optional
 let bf = GetTagFunction(brainfuck);
-
-let res = bf`+++[->,.+++.<]`; // <---
-
-console.log(res.out.join(''));
+let res = bf`+++[->,.+++.<]${{ in: 'ABC'.split('') }}`; // <---
+console.log(res.data.out.join(''));
 ```
 </details>
 
