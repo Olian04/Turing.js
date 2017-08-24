@@ -1,9 +1,5 @@
 import { Exception } from './exceptions';
 
-export type Partial<T> = {
-    [P in keyof T]?: T[P];
-};
-
 export enum LanguageEvent {
     eof = 'eof',
     unexpectedToken = 'unexpectedToken',

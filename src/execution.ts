@@ -93,7 +93,7 @@ export function executeTokens<T>(executionState: ExecutionState<T>, tokens: ITok
 }
 
 export function tokenizeString(code: string): IToken[] {
-    let tok = code.split('');
+    let tok = code.split(''); // TODO: Reimplement this to use multiple deliminators
     return tok.map((e, i) => {
         let t: IToken = {
             position: i,
