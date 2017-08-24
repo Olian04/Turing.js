@@ -60,19 +60,19 @@ let brainfuck = new Language()
     .on('eof', state => state.data.loops.length === 0)
     .data({ in: [], out: [], loops: [] });
 
-// Running brainfuck code
+let bf = GetTagFunction(brainfuck); // Lets create a tag function
+
+// Running brainfuck code    
 brainfuck
     .data({ in: 'ABC'.split('') })
     .run('+++[->,.+++.<]')
     .then(finalState => console.log(finalState.data.out.join(''))/* ADBECF */)
     .catch(error => console.log(error));
-
-
-// Same thing as above, but using a tag function
-let brainfuckClone = new Language(brainfuck); // This step is optional
-let bf = GetTagFunction(brainfuck);
-let res = bf`+++[->,.+++.<]${{ in: 'ABC'.split('') }}`; // <---
+    
+// Now lets use that tag function
+let res = bf`+++[->,.+++.<]${{ in: 'ABC'.split('') }}`;
 console.log(res.data.out.join(''));
+
 ```
 </details>
 

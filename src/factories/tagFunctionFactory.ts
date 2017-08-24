@@ -25,15 +25,17 @@ export type TagFunction<T> = (strings: TemplateStringsArray, ...data: Partial<T>
  * @returns {TagFunction<T>} 
  */
 export function GetTagFunction<T>(language: Language<T>, errorCallback?: (error: Error) => void): TagFunction<T> {
+    let tempLang: Language<T> = new Language(language); // Copy the original language
     return (codeFragments, ...data: Partial<T>[]) => {
+        let lang: Language<T> = new Language(tempLang); // Create a local copy for each execution. Prevents overflow of data
         let code = codeFragments.reduce((res, c) => {
             return ''+res+''+c;
         }, '');
         data.forEach(e => {
-            language.data(e);
+            lang.data(e);
         });
         let result: IState<T>;
-        language.run(code, state => {
+        lang.run(code, state => {
             result = state; 
         }, err => { 
             if (typeof errorCallback === 'function') {
