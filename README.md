@@ -81,11 +81,11 @@ npm install
 
 `npm run build`
 
-## Tests 
+### Tests 
 
 `npm run test`
 
-## Publishing
+### Publishing
 
 _Refer to: https://www.tsmean.com/articles/how-to-write-a-typescript-library/_
 
