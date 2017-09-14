@@ -31,3 +31,4 @@ brainfuck
     .then(finalState => console.log(finalState.data.out.join(''))/* ADBECF */)
     .catch(error => console.log(error));
     
+// 100 commits milestone :P 
