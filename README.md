@@ -20,25 +20,10 @@ __Docs:__ [TBD](#api-reference)
 ## Demo
 
 ```js
-/* Super small counter demo */
-import { Language } from 'turingjs';
-
-new Language()
-    .token('+', state => { state.data.sum++ })
-    .token('-', state => { state.data.sum-- })
-    .data('sum', 0)
-    .run('+--++-++++')
-    .then(state => console.log(state.data.sum)/* 4 */)
-    .catch(err => { throw err });
-```
-
-<details>
-<summary>Brainfuck demo</summary>
-
-```js
 /* The full Brainfuck language */
 import { Language, GetTagFunction, Skip } from 'turingjs';
 
+// Step 1: Define a new language
 let brainfuck = new Language()
     .token({
         '+': state => { state.stack[state.index]++ },
@@ -58,21 +43,18 @@ let brainfuck = new Language()
     .on('eof', state => state.data.loops.length === 0)
     .data({ in: [], out: [], loops: [] });
 
-let bf = GetTagFunction(brainfuck); // Lets create a tag function
-
-// Running brainfuck code    
+// Step 2: Run some code in the new language    
 brainfuck
     .data({ in: 'ABC'.split('') })
     .run('+++[->,.+++.<]')
     .then(finalState => console.log(finalState.data.out.join(''))/* ADBECF */)
     .catch(error => console.log(error));
-    
-// Now lets use that tag function
-let res = bf`+++[->,.+++.<]${{ in: 'ABC'.split('') }}`;
-console.log(res.data.out.join(''));
 
+// Same thing as step 2, but using a tag function instead
+let bf = GetTagFunction(brainfuck); //  Create tag function
+let finalState = bf`+++[->,.+++.<]${{ in: 'ABC'.split('') }}`; // Run some code
+console.log(finalState.data.out.join('')); // Get the output: ADBECF 
 ```
-</details>
 
 ## Developing
 
