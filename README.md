@@ -24,6 +24,23 @@ __Docs:__ [TBD](#api-reference)
 # Demo
 
 ```ts
+/* Super simple counter */
+import { Language } from 'turingjs';
+
+new Language<{ sum: number }>()
+    .token({
+        '+': state => { state.data.sum++ },
+        '-': state => { state.data.sum-- }
+    })
+    .data({
+        sum: 0
+    })
+    .run('++-+++--')
+    .then(state => console.log(state.data.sum)/* 2 */);
+    
+```
+
+```ts
 /* The full Brainfuck language */
 import { Language, GetTagFunction, Skip } from 'turingjs';
 
