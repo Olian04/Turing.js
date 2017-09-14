@@ -102,3 +102,16 @@ export function tokenizeString(code: string): IToken[] {
         return t;
     });
 }
+
+/**
+ * @template T 
+ * @param {ExecutionState<T>} executionStateStore 
+ * @param {string} program 
+ * @returns {IState<T>} 
+ */
+export function execute<T>(executionStateStore: ExecutionState<T>, program: string): IState<T> {
+    let executionState = executionStateStore.clone(); // Create a deep clone of the current stateStore
+    let tokens = tokenizeString(program);
+    executeTokens(executionState, tokens);
+    return executionState.state;
+}

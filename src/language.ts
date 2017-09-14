@@ -1,10 +1,20 @@
 import { IToken, TokenHandler, TokenHandlers, IState, LanguageEvent, EventHandler, EventHandlers } from './interfaces';
-import { ExecutionState, executeTokens, tokenizeString } from './execution';
+import { ExecutionState, execute } from './execution';
 
 export class Language<T> {
     private executionStateStore: ExecutionState<T>;
 
+    /**
+     * Creates an instance of Language.
+     * @memberof Language
+     */
     constructor();
+    
+    /**
+     * Creates an instance of Language that is a clone of baseLanguage.
+     * @param {Language<T>} baseLanguage 
+     * @memberof Language
+     */
     constructor(baseLanguage: Language<T>);
     constructor(...args) {
         if (args.length === 1) {
@@ -162,7 +172,7 @@ export class Language<T> {
                 throw e;
             }
         } else if (args.length === 3) {
-            // 1 (with onError): Runs synchronous
+            // 2 (with onError): Runs synchronous
             let [program, onSuccess, onError] = args;
             try {
                 onSuccess(execute(this.executionStateStore, program));
@@ -171,17 +181,4 @@ export class Language<T> {
             }
         }
     }
-}
-
-/**
- * @template T 
- * @param {ExecutionState<T>} executionStateStore 
- * @param {string} program 
- * @returns {IState<T>} 
- */
-function execute<T>(executionStateStore: ExecutionState<T>, program: string): IState<T> {
-    let executionState = executionStateStore.clone(); // Create a deep clone of the current stateStore
-    let tokens = tokenizeString(program);
-    executeTokens(executionState, tokens);
-    return executionState.state;
 }
