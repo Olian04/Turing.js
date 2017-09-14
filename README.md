@@ -69,6 +69,7 @@ console.log(finalState.data.out.join('')); // Get the output: ADBECF
 
 ## Tested with
 
+* [ts-node](https://github.com/TypeStrong/ts-node)
 * [Mocha](https://mochajs.org/)
 * [chai](http://chaijs.com/)
 
