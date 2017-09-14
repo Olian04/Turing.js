@@ -13,6 +13,8 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 
 __Install:__ `npm i --save turingjs`
 
+__Playground:__ https://runkit.com/olian04/turing-js-demo
+
 __Docs:__ [TBD](#api-reference)
 
 ## Demo
