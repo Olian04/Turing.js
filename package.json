@@ -1,6 +1,6 @@
 {
   "name": "turingjs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Turing.js is an Event-Driven-Language-Design-API based on the definition of a [turing machine](https://en.wikipedia.org/wiki/Turing_machine).",
   "main": "dist/turingjs.js",
   "types": "dist/turingjs.d.ts",
