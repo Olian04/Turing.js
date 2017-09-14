@@ -1,29 +1,8 @@
 let assert = require('assert');
 let Language = require('../../dist/turingjs').Language;
 
-
-describe('Demo usage ran synchronous', function() {
-    describe('empty', function() {
-        let lang = new Language();
-        it('', function() {
-            lang.run('', state => {
-                assert.deepEqual(state.data, {});
-            }, error => {
-                assert.fail();
-            });
-        });
-    });
-    describe('error', function() {
-        let lang = new Language();
-        it('err', function() {
-            lang.run('err', state => {
-                assert.fail();
-            }, error => {
-                assert.ok(true);
-            });
-        });
-    });
-    describe('sum (+-)', function() {
+describe('Language: Counter (synchronous)', function() {
+    describe('OK', function() {
         let lang = new Language()
             .token({
                 '+': state => { state.data.sum++},

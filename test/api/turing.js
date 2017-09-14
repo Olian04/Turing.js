@@ -11,9 +11,18 @@ describe('turingjs.js', function() {
             assert.fail();
         }
     }); 
-    describe('#exports', function() {
+    describe('API', function() {
         it("Language", function() {
             assert.equal(typeof turingjs.Language, 'function');
+        });
+        it("EventType", function() {
+            assert.equal(typeof turingjs.EventType, 'object');
+        });
+        it("GetTagFunction", function() {
+            assert.equal(typeof turingjs.GetTagFunction, 'function');
+        });
+        it("Skip", function() {
+            assert.equal(typeof turingjs.Skip, 'object');
         });
     });
 });

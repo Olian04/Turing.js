@@ -5,7 +5,7 @@ describe('language.js', function() {
     it('Language should be an object', function() {
         assert.equal(typeof new Language(), 'object');
     });
-    describe('#exports', function() {
+    describe('API', function() {
         let lang = new Language();
         it('.token', function() {
             assert.equal(typeof lang.token, 'function');
