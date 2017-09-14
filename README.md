@@ -9,7 +9,11 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 > A Turing machine is an abstract machine that manipulates symbols on a strip of tape according to a table of rules.
 > The machine operates on an infinite memory tape divided into discrete cells. The machine positions its head over a cell and "reads"  the symbol there. Then, as per the symbol and its present place in a finite table of user-specified instructions, the machine (i) writes a symbol (e.g. a digit or a letter from a finite alphabet) in the cell, then (ii) either moves the tape one cell left or right, then (iii) (as determined by the observed symbol and the machine's place in the table) either proceeds to a subsequent instruction or halts the computation.
 
-## Stuff
+## Typescript & Typings
+
+Turing.js is written in and is designed to be used in Typescript, this means that Turing.js will always include its own typings. Because Turing.js comes with its own typings it lends it self very well to editors such as [vs code](https://code.visualstudio.com/) that utilizes typings in both typescript and javascript to [improve intellisense](https://code.visualstudio.com/docs/languages/javascript#_intellisense).
+
+# Links & Install
 
 __Install:__ `npm i --save turingjs`
 
@@ -17,7 +21,7 @@ __Playground:__ https://runkit.com/olian04/turing-js-demo
 
 __Docs:__ [TBD](#api-reference)
 
-## Demo
+# Demo
 
 ```ts
 /* The full Brainfuck language */
@@ -56,20 +60,24 @@ let finalState = bf`+++[->,.+++.<]${{ in: 'ABC'.split('') }}`; // Run some code
 console.log(finalState.data.out.join('')); // Get the output: ADBECF 
 ```
 
-## Developing
+# Developing
 
-### Built with
+## Built with
 
-* [Lodash](https://lodash.com/)
 * [Typescript](https://www.typescriptlang.org/)
-* [Mocha](https://mochajs.org/)
+* [Lodash](https://lodash.com/)
 
-### Prerequisites
+## Tested with
+
+* [Mocha](https://mochajs.org/)
+* [chai](http://chaijs.com/)
+
+## Prerequisites
 
 * [Git](https://git-scm.com/)
 * [Node.js](https://nodejs.org/en/)
 
-### Setting up dev
+## Setting up dev
 
 ```
 git clone git@github.com:Olian04/Turing.js.git
@@ -77,19 +85,19 @@ cd Turing.js
 npm install
 ```
 
-### Building
+## Building
 
 `npm run build`
 
-### Tests 
+## Testing
 
 `npm run test`
 
-### Publishing
+## Publishing
 
 _Refer to: https://www.tsmean.com/articles/how-to-write-a-typescript-library/_
 
-## Api reference
+# Api reference
 
 At the core of every Turing.js language lies a Language object, this object keeps track of what rules your language abides by. It is also this Language object that takes care of executing code written in your new language.
 
@@ -104,5 +112,5 @@ Function | Description
 
 _I'm working on a full documentation page, for now look at the demos above._
 
-## Credits
+# Credits
 * Logo: https://logomakr.com/6LYfIX
