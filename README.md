@@ -19,12 +19,12 @@ __Docs:__ [TBD](#api-reference)
 
 ## Demo
 
-```js
+```ts
 /* The full Brainfuck language */
 import { Language, GetTagFunction, Skip } from 'turingjs';
 
 // Step 1: Define a new language
-let brainfuck = new Language()
+let brainfuck = new Language<{ in: string[], out: string[], loops: number[] }>()
     .token({
         '+': state => { state.stack[state.index]++ },
         '-': state => { state.stack[state.index]-- },
@@ -103,16 +103,6 @@ Function | Description
 `run` | Runs some code written in your new language.
 
 _I'm working on a full documentation page, for now look at the demos above._
-
-## Update log
-
-#### 1.0
-All MVP features have been implemented.
-A usable demo consisting of all Brainf**k instruction can be run.
-
-#### 0.1
-All basic components have been had their development started.
-A usable demo consisting of all Brainf**k instruction, except the loops, can be run.
 
 ## Credits
 * Logo: https://logomakr.com/6LYfIX

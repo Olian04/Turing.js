@@ -1,7 +1,7 @@
 import { Language, GetTagFunction, Skip, EventType } from './src/turingjs';
 
 /* The full Brainfuck language */
-let brainfuck = new Language<{ in: string[], out: string[], loops: number[]}>()
+let brainfuck = new Language<{ in: string[], out: string[], loops: number[] }>()
     .token({
         '+': state => { state.stack[state.index]++ },
         '-': state => { state.stack[state.index]-- },
