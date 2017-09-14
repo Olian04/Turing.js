@@ -1,9 +1,11 @@
-let assert = require('assert');
-let Language = require('../../dist/turingjs').Language;
+import { assert, expect } from 'chai';
+import * as _ from 'lodash';
+
+import { Language, EventType, GetTagFunction, Skip } from '../../src/turingjs';
 
 describe('Language: Counter', function() {
     describe('OK', function() {
-        let lang = new Language()
+        let lang = new Language<{ sum: number }>()
             .token({
                 '+': state => { state.data.sum++},
                 '-': state => { state.data.sum-- },

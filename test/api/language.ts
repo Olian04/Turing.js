@@ -1,5 +1,7 @@
-let assert = require('assert');
-let Language = require('../../dist/turingjs').Language;
+import { assert, expect } from 'chai';
+import * as _ from 'lodash';
+
+import { Language, EventType, GetTagFunction, Skip } from '../../src/turingjs';
 
 describe('language.js', function() {
     it('Language should be an object', function() {

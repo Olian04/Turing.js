@@ -1,9 +1,10 @@
-let assert = require('assert');
-let _ = require('lodash');
-let { Language, EventType, GetTagFunction, Skip } =  require('../../dist/turingjs.js');
+import { assert, expect } from 'chai';
+import * as _ from 'lodash';
+
+import { Language, EventType, GetTagFunction, Skip } from '../../src/turingjs';
 
 describe('Language: Brainfuck', function() {
-    let brainfuck = new Language()
+    let brainfuck = new Language<{ in: string[], out: string[], loops: number[] }>()
         .token({
             '+': state => { state.stack[state.index]++ },
             '-': state => { state.stack[state.index]-- },

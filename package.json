@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npm run watch",
     "watch": "tsc -w",
-    "test": "mocha --recursive",
+    "test": "mocha --recursive -r ts-node/register test/**/*.ts",
     "build": "tsc"
   },
   "repository": {
@@ -26,10 +26,13 @@
   },
   "homepage": "https://github.com/Olian04/Turing.js#readme",
   "devDependencies": {
+    "@types/assert": "0.0.31",
+    "@types/chai": "^4.0.4",
     "@types/es6-promise": "0.0.32",
     "@types/lodash": "^4.14.71",
-    "@types/mocha": "^2.2.41",
+    "@types/mocha": "^2.2.43",
     "@types/typescript": "^2.0.0",
+    "chai": "^4.1.2",
     "mocha": "^3.4.2",
     "ts-node": "^3.3.0",
     "typescript": "^2.4.2"

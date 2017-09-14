@@ -1,15 +1,12 @@
-let assert = require('assert');
+import { assert, expect } from 'chai';
+import * as _ from 'lodash';
+
+import * as turingjs from '../../src/turingjs';
 
 // Tests that the module loads as intended
 describe('turingjs.js', function() {
-    let turingjs;
-    it("should be importable via require()", function() {
-        try {
-            turingjs = require('../../dist/turingjs');
-            assert.ok(true);
-        } catch (e) {
-            assert.fail();
-        }
+    it("should be importable", function() {
+        assert(turingjs);
     }); 
     describe('API', function() {
         it("Language", function() {
