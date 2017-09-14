@@ -11,12 +11,10 @@ Turing.js is an Event-Driven-Language-Design-API based on the definition of a  [
 
 ## Install
 
-__CDN:__ https://cdn.rawgit.com/Olian04/Turing.js/master/bin/turingjs.js <br>
-__npm:__ TBD
+__npm:__ `npm i --save turingjs`
 
 ---
 
-__Live demo:__ [Turing.js](https://olian04.github.io/Turing.js/) <br>
 __Docs:__ [TBD](#api-reference)
 
 ## Demo
@@ -99,11 +97,15 @@ npm install
 
 ### Building
 
-`npm start`
+`npm run build`
 
 ## Tests 
 
 `npm run test`
+
+## Publishing
+
+_Refer to: https://www.tsmean.com/articles/how-to-write-a-typescript-library/_
 
 ## Api reference
 
