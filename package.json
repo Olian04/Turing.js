@@ -5,7 +5,7 @@
   "main": "dist/turingjs.js",
   "types": "dist/turingjs.d.ts",
   "scripts": {
-    "start": "npm run watch",
+    "start": "ts-node demo.ts",
     "watch": "tsc -w",
     "test": "mocha --recursive -r ts-node/register test/**/*.ts",
     "build": "tsc"
