@@ -1,9 +1,6 @@
-mix-manifest.json
-webpack.mix.js
-tsconfig.json
-jsconfig.json
-src
-test
 .circleci
 .vscode
+tsconfig.json
+src
+test
 demo.ts
