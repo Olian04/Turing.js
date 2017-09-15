@@ -9,7 +9,7 @@
     "watch": "tsc -w",
     "test": "mocha --recursive -r ts-node/register test/**/*.ts",
     "build": "tsc",
-    "doc": "typedoc --out docs/ src/turingjs.ts"
+    "doc": "typedoc --mode file --out docs/ src/turingjs.ts"
   },
   "repository": {
     "type": "git",
