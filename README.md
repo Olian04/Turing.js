@@ -40,6 +40,8 @@ new Language<{ sum: number }>()
     
 ```
 
+---
+
 ```ts
 /* The full Brainfuck language */
 import { Language, GetTagFunction, Skip } from 'turingjs';
