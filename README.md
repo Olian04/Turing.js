@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/Olian04/Turing.js/tree/master.svg?style=shield&circle-token=b901a939d226b2f1a28e5d2823983da26854ea98)](https://circleci.com/gh/Olian04/Turing.js/tree/master)
-![Npm dependancies](https://david-dm.org/olian04/turing.js.svg)
+[![Npm dependancies](https://david-dm.org/olian04/turing.js.svg)](https://david-dm.org/olian04/turing.js.svg)
 
 [![Turing.js logo](https://i.imgur.com/Y2g0yiA.png)](https://olian04.github.io/Turing.js/)
 
@@ -19,7 +19,7 @@ __Install:__ `npm i --save turingjs`
 
 __Playground:__ https://runkit.com/olian04/turing-js-demo
 
-__Docs:__ [TBD](#api-reference)
+__Docs:__ https://olian04.github.io/Turing.js/
 
 # Demo
 
@@ -128,7 +128,7 @@ Function | Description
 `on` | Adds event handlers for various events fired during an execution of code.
 `run` | Runs some code written in your new language.
 
-_I'm working on a full documentation page, for now look at the demos above._
+For further reference please see the [auto generated docs](https://olian04.github.io/Turing.js/).
 
 # Credits
 * Logo: https://logomakr.com/6LYfIX
