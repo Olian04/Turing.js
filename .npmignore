@@ -1,6 +1,8 @@
 .circleci
 .vscode
+.gitignore
 tsconfig.json
 src
 test
+docs
 demo.ts
