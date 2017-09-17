@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/Olian04/Turing.js/tree/master.svg?style=shield&circle-token=b901a939d226b2f1a28e5d2823983da26854ea98)](https://circleci.com/gh/Olian04/Turing.js/tree/master)
+[![codecov](https://codecov.io/gh/Olian04/Turing.js/branch/master/graph/badge.svg)](https://codecov.io/gh/Olian04/Turing.js)
 [![Npm dependancies](https://david-dm.org/olian04/turing.js.svg)](https://david-dm.org/olian04/turing.js.svg)
 
 [![Turing.js logo](https://i.imgur.com/Y2g0yiA.png)](https://olian04.github.io/Turing.js/)
