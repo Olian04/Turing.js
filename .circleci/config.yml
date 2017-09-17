@@ -36,7 +36,8 @@ jobs:
       # compile ts code
       - run: npm run build
 
-      - run: ./node_modules/.bin/codecov
-
       # run tests!
       - run: npm test
+
+      # upload code coverage to codecov.io
+      - run: ./node_modules/.bin/codecov
