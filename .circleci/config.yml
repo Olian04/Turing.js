@@ -36,9 +36,7 @@ jobs:
       # compile ts code
       - run: npm run build
 
+      - run: ./node_modules/.bin/codecov
+
       # run tests!
       - run: npm test
-    
-    test:
-      post:
-        - bash <(curl -s https://codecov.io/bash)
