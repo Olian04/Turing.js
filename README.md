@@ -16,7 +16,7 @@ Turing.js is written in and is designed to be used in Typescript, this means tha
 
 # Links & Install
 
-__Install:__ `npm i --save turingjs`
+__Install:__ [`npm i turingjs`](https://www.npmjs.com/package/turingjs)
 
 __Playground:__ https://runkit.com/olian04/turing-js-demo
 
